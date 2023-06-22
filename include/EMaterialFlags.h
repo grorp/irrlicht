@@ -39,12 +39,20 @@ namespace video
 		/** Overrides EMF_BACK_FACE_CULLING if both are enabled. */
 		EMF_FRONT_FACE_CULLING = 0x80,
 
-		//! Is bilinear filtering enabled? Default: true
+		//! Is (MinFilter == ETMINF_BILINEAR && MagFilter == ETMAGF_BILINEAR)?
+		/** Default: true.
+		Provided for backwards compatibility. Use the MinFilter and MagFilter
+		properties of SMaterialLayer instead.
+		Don't use both this flag and the MinFilter and MagFilter properties on
+		a single material, as they are not kept in sync. */
 		EMF_BILINEAR_FILTER = 0x100,
 
-		//! Is trilinear filtering enabled? Default: false
-		/** If the trilinear filter flag is enabled,
-		the bilinear filtering flag is ignored. */
+		//! Is (MinFilter == ETMINF_TRILINEAR && MagFilter == ETMAGF_BILINEAR)?
+		/** Default: false. Overrides EMF_BILINEAR_FILTER if both are enabled.
+		Provided for backwards compatibility. Use the MinFilter and MagFilter
+		properties of SMaterialLayer instead.
+		Don't use both this flag and the MinFilter and MagFilter properties on
+		a single material, as they are not kept in sync. */
 		EMF_TRILINEAR_FILTER = 0x200,
 
 		//! Is anisotropic filtering? Default: false

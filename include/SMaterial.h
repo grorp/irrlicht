@@ -535,14 +535,18 @@ namespace video
 					FrontfaceCulling = value; break;
 				case EMF_BILINEAR_FILTER:
 				{
-					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
-						TextureLayer[i].BilinearFilter = value;
+					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i) {
+						TextureLayer[i].BilinearFilterLegacy = value;
+						TextureLayer[i].applyFiltersLegacy();
+					}
 				}
 				break;
 				case EMF_TRILINEAR_FILTER:
 				{
-					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
-						TextureLayer[i].TrilinearFilter = value;
+					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i) {
+						TextureLayer[i].TrilinearFilterLegacy = value;
+						TextureLayer[i].applyFiltersLegacy();
+					}
 				}
 				break;
 				case EMF_ANISOTROPIC_FILTER:
@@ -615,9 +619,9 @@ namespace video
 				case EMF_FRONT_FACE_CULLING:
 					return FrontfaceCulling;
 				case EMF_BILINEAR_FILTER:
-					return TextureLayer[0].BilinearFilter;
+					return TextureLayer[0].BilinearFilterLegacy;
 				case EMF_TRILINEAR_FILTER:
-					return TextureLayer[0].TrilinearFilter;
+					return TextureLayer[0].TrilinearFilterLegacy;
 				case EMF_ANISOTROPIC_FILTER:
 					return TextureLayer[0].AnisotropicFilter!=0;
 				case EMF_FOG_ENABLE:

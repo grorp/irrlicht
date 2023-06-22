@@ -104,7 +104,8 @@ CNullDriver::CNullDriver(io::IFileSystem* io, const core::dimension2d<u32>& scre
 	InitMaterial2D.UseMipMaps=false;
 	for (u32 i=0; i<video::MATERIAL_MAX_TEXTURES; ++i)
 	{
-		InitMaterial2D.TextureLayer[i].BilinearFilter=false;
+		InitMaterial2D.TextureLayer[i].MinFilter=video::ETMINF_NEAREST;
+		InitMaterial2D.TextureLayer[i].MagFilter=video::ETMAGF_NEAREST;
 		InitMaterial2D.TextureLayer[i].TextureWrapU=video::ETC_REPEAT;
 		InitMaterial2D.TextureLayer[i].TextureWrapV=video::ETC_REPEAT;
 		InitMaterial2D.TextureLayer[i].TextureWrapW = video::ETC_REPEAT;

@@ -105,20 +105,14 @@ namespace video
 						case EMF_BACK_FACE_CULLING: material.BackfaceCulling = Material.BackfaceCulling; break;
 						case EMF_FRONT_FACE_CULLING: material.FrontfaceCulling = Material.FrontfaceCulling; break;
 						case EMF_BILINEAR_FILTER:
-							for ( u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
-							{
-								if ( EnableLayerFlags[i] )
-								{
-									material.TextureLayer[i].BilinearFilter = Material.TextureLayer[i].BilinearFilter;
-								}
-							}
-							break;
+							[[fallthrough]];
 						case EMF_TRILINEAR_FILTER:
 							for ( u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
 							{
 								if ( EnableLayerFlags[i] )
 								{
-									material.TextureLayer[i].TrilinearFilter = Material.TextureLayer[i].TrilinearFilter;
+									material.TextureLayer[i].MinFilter = Material.TextureLayer[i].MinFilter;
+									material.TextureLayer[i].MagFilter = Material.TextureLayer[i].MagFilter;
 								}
 							}
 							break;

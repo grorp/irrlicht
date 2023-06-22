@@ -43,6 +43,29 @@ namespace video
 			"texture_clamp_mirror_clamp_to_edge",
 			"texture_clamp_mirror_clamp_to_border", 0};
 
+	//! Texture minification filter.
+	/** Used when scaling down. */
+	enum E_TEXTURE_MIN_FILTER {
+		//! Nearest-neighbor interpolation.
+		ETMINF_NEAREST = 0,
+		//! Linear interpolation.
+		ETMINF_BILINEAR,
+		//! Linear interpolation across mipmaps.
+		/** Is equivalent to ETMINF_BILINEAR if mipmaps are disabled.
+		Only available as a minification filter since mipmaps are only used
+		when scaling down. */
+		ETMINF_TRILINEAR,
+	};
+
+	//! Texture magnification filter.
+	/** Used when scaling up. */
+	enum E_TEXTURE_MAG_FILTER {
+		//! Nearest-neighbor interpolation.
+		ETMAGF_NEAREST = 0,
+		//! Linear interpolation.
+		ETMAGF_BILINEAR,
+	};
+
 	//! Struct for holding material parameters which exist per texture layer
 	// Note for implementors: Serialization is in CNullDriver
 	class SMaterialLayer
@@ -50,7 +73,8 @@ namespace video
 	public:
 		//! Default constructor
 		SMaterialLayer() : Texture(0), TextureWrapU(ETC_REPEAT), TextureWrapV(ETC_REPEAT), TextureWrapW(ETC_REPEAT),
-			BilinearFilter(true), TrilinearFilter(false), AnisotropicFilter(0), LODBias(0), TextureMatrix(0)
+			MinFilter(ETMINF_BILINEAR), MagFilter(ETMAGF_BILINEAR), AnisotropicFilter(0), LODBias(0), TextureMatrix(0),
+			BilinearFilterLegacy(true), TrilinearFilterLegacy(false)
 		{
 		}
 
@@ -104,10 +128,12 @@ namespace video
 			TextureWrapU = other.TextureWrapU;
 			TextureWrapV = other.TextureWrapV;
 			TextureWrapW = other.TextureWrapW;
-			BilinearFilter = other.BilinearFilter;
-			TrilinearFilter = other.TrilinearFilter;
+			MinFilter = other.MinFilter;
+			MagFilter = other.MagFilter;
 			AnisotropicFilter = other.AnisotropicFilter;
 			LODBias = other.LODBias;
+			BilinearFilterLegacy = other.BilinearFilterLegacy;
+			TrilinearFilterLegacy = other.TrilinearFilterLegacy;
 
 			return *this;
 		}
@@ -157,10 +183,12 @@ namespace video
 				TextureWrapU != b.TextureWrapU ||
 				TextureWrapV != b.TextureWrapV ||
 				TextureWrapW != b.TextureWrapW ||
-				BilinearFilter != b.BilinearFilter ||
-				TrilinearFilter != b.TrilinearFilter ||
+				MinFilter != b.MinFilter ||
+				MagFilter != b.MagFilter ||
 				AnisotropicFilter != b.AnisotropicFilter ||
-				LODBias != b.LODBias;
+				LODBias != b.LODBias ||
+				BilinearFilterLegacy != b.BilinearFilterLegacy ||
+				TrilinearFilterLegacy != b.TrilinearFilterLegacy;
 			if (different)
 				return true;
 			else
@@ -184,13 +212,10 @@ namespace video
 		u8 TextureWrapV:4;
 		u8 TextureWrapW:4;
 
-		//! Is bilinear filtering enabled? Default: true
-		bool BilinearFilter:1;
-
-		//! Is trilinear filtering enabled? Default: false
-		/** If the trilinear filter flag is enabled,
-		the bilinear filtering flag is ignored. */
-		bool TrilinearFilter:1;
+		//! Minification filter.
+		E_TEXTURE_MIN_FILTER MinFilter;
+		//! Magnification filter.
+		E_TEXTURE_MAG_FILTER MagFilter;
 
 		//! Is anisotropic filtering enabled? Default: 0, disabled
 		/** In Irrlicht you can use anisotropic texture filtering
@@ -215,6 +240,29 @@ namespace video
 		/** Do not access this element directly as the internal
 		resource management has to cope with Null pointers etc. */
 		core::matrix4* TextureMatrix;
+
+		/** Used for emulating the old behavior of EMF_BILINEAR_FILTER and
+		EMF_TRILINEAR_FILTER. */
+		bool BilinearFilterLegacy;
+
+		/** Used for emulating the old behavior of EMF_BILINEAR_FILTER and
+		EMF_TRILINEAR_FILTER. */
+		bool TrilinearFilterLegacy;
+
+		/** Used for emulating the old behavior of EMF_BILINEAR_FILTER and
+		EMF_TRILINEAR_FILTER. */
+		void applyFiltersLegacy() {
+			if (TrilinearFilterLegacy) {
+				MinFilter = ETMINF_TRILINEAR;
+				MagFilter = ETMAGF_BILINEAR;
+			} else if (BilinearFilterLegacy) {
+				MinFilter = ETMINF_BILINEAR;
+				MagFilter = ETMAGF_BILINEAR;
+			} else {
+				MinFilter = ETMINF_NEAREST;
+				MagFilter = ETMAGF_NEAREST;
+			}
+		}
 	};
 
 } // end namespace video
