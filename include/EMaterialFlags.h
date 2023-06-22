@@ -39,22 +39,6 @@ namespace video
 		/** Overrides EMF_BACK_FACE_CULLING if both are enabled. */
 		EMF_FRONT_FACE_CULLING = 0x80,
 
-		//! Is (MinFilter == ETMINF_BILINEAR && MagFilter == ETMAGF_BILINEAR)?
-		/** Default: true.
-		Provided for backwards compatibility. Use the MinFilter and MagFilter
-		properties of SMaterialLayer instead.
-		Don't use both this flag and the MinFilter and MagFilter properties on
-		a single material, as they are not kept in sync. */
-		EMF_BILINEAR_FILTER = 0x100,
-
-		//! Is (MinFilter == ETMINF_TRILINEAR && MagFilter == ETMAGF_BILINEAR)?
-		/** Default: false. Overrides EMF_BILINEAR_FILTER if both are enabled.
-		Provided for backwards compatibility. Use the MinFilter and MagFilter
-		properties of SMaterialLayer instead.
-		Don't use both this flag and the MinFilter and MagFilter properties on
-		a single material, as they are not kept in sync. */
-		EMF_TRILINEAR_FILTER = 0x200,
-
 		//! Is anisotropic filtering? Default: false
 		/** In Irrlicht you can use anisotropic texture filtering in
 		conjunction with bilinear or trilinear texture filtering
@@ -72,12 +56,6 @@ namespace video
 		the normals will be normalized again, and the model will look
 		as bright as it should. */
 		EMF_NORMALIZE_NORMALS = 0x1000,
-
-		//! Access to all layers texture wrap settings. Overwrites separate layer settings.
-		/** Note that if you want to change TextureWrapU, TextureWrapV, TextureWrapW 
-		independently, then you can't work with this flag, but will have to set the variables
-		directly. */
-		EMF_TEXTURE_WRAP = 0x2000,
 
 		//! AntiAliasing mode
 		EMF_ANTI_ALIASING = 0x4000,

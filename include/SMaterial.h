@@ -462,6 +462,12 @@ namespace video
 		/** Sometimes, disabling mipmap usage can be useful. Default: true */
 		bool UseMipMaps:1;
 
+		void forEachTexture(const std::function<void(SMaterialLayer &)>& fn) {
+			for (u32 i = 0; i < MATERIAL_MAX_TEXTURES; i++) {
+				fn(TextureLayer[i]);
+			}
+		}
+
 		//! Gets the texture transformation matrix for level i
 		/** \param i The desired level. Must not be larger than MATERIAL_MAX_TEXTURES
 		\return Texture matrix for texture level i. */
@@ -533,22 +539,6 @@ namespace video
 					BackfaceCulling = value; break;
 				case EMF_FRONT_FACE_CULLING:
 					FrontfaceCulling = value; break;
-				case EMF_BILINEAR_FILTER:
-				{
-					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i) {
-						TextureLayer[i].BilinearFilterLegacy = value;
-						TextureLayer[i].applyFiltersLegacy();
-					}
-				}
-				break;
-				case EMF_TRILINEAR_FILTER:
-				{
-					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i) {
-						TextureLayer[i].TrilinearFilterLegacy = value;
-						TextureLayer[i].applyFiltersLegacy();
-					}
-				}
-				break;
 				case EMF_ANISOTROPIC_FILTER:
 				{
 					if (value)
@@ -563,16 +553,6 @@ namespace video
 					FogEnable = value; break;
 				case EMF_NORMALIZE_NORMALS:
 					NormalizeNormals = value; break;
-				case EMF_TEXTURE_WRAP:
-				{
-					for (u32 i=0; i<MATERIAL_MAX_TEXTURES; ++i)
-					{
-						TextureLayer[i].TextureWrapU = (E_TEXTURE_CLAMP)value;
-						TextureLayer[i].TextureWrapV = (E_TEXTURE_CLAMP)value;
-						TextureLayer[i].TextureWrapW = (E_TEXTURE_CLAMP)value;
-					}
-				}
-				break;
 				case EMF_ANTI_ALIASING:
 					AntiAliasing = value?EAAM_SIMPLE:EAAM_OFF; break;
 				case EMF_COLOR_MASK:
@@ -618,20 +598,12 @@ namespace video
 					return BackfaceCulling;
 				case EMF_FRONT_FACE_CULLING:
 					return FrontfaceCulling;
-				case EMF_BILINEAR_FILTER:
-					return TextureLayer[0].BilinearFilterLegacy;
-				case EMF_TRILINEAR_FILTER:
-					return TextureLayer[0].TrilinearFilterLegacy;
 				case EMF_ANISOTROPIC_FILTER:
 					return TextureLayer[0].AnisotropicFilter!=0;
 				case EMF_FOG_ENABLE:
 					return FogEnable;
 				case EMF_NORMALIZE_NORMALS:
 					return NormalizeNormals;
-				case EMF_TEXTURE_WRAP:
-					return !(TextureLayer[0].TextureWrapU ||
-							TextureLayer[0].TextureWrapV ||
-							TextureLayer[0].TextureWrapW);
 				case EMF_ANTI_ALIASING:
 					return (AntiAliasing==1);
 				case EMF_COLOR_MASK:

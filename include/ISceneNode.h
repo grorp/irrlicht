@@ -386,6 +386,11 @@ namespace scene
 				getMaterial(i).MaterialType = newType;
 		}
 
+		void forEachMaterial(const std::function<void(video::SMaterial &)>& fn) {
+			for (u32 i = 0; i < getMaterialCount(); i++) {
+				fn(getMaterial(i));
+			}
+		}
 
 		//! Gets the scale of the scene node relative to its parent.
 		/** This is the scale of this node relative to its parent.

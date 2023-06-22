@@ -73,8 +73,7 @@ namespace video
 	public:
 		//! Default constructor
 		SMaterialLayer() : Texture(0), TextureWrapU(ETC_REPEAT), TextureWrapV(ETC_REPEAT), TextureWrapW(ETC_REPEAT),
-			MinFilter(ETMINF_BILINEAR), MagFilter(ETMAGF_BILINEAR), AnisotropicFilter(0), LODBias(0), TextureMatrix(0),
-			BilinearFilterLegacy(true), TrilinearFilterLegacy(false)
+			MinFilter(ETMINF_BILINEAR), MagFilter(ETMAGF_BILINEAR), AnisotropicFilter(0), LODBias(0), TextureMatrix(0)
 		{
 		}
 
@@ -132,8 +131,6 @@ namespace video
 			MagFilter = other.MagFilter;
 			AnisotropicFilter = other.AnisotropicFilter;
 			LODBias = other.LODBias;
-			BilinearFilterLegacy = other.BilinearFilterLegacy;
-			TrilinearFilterLegacy = other.TrilinearFilterLegacy;
 
 			return *this;
 		}
@@ -186,9 +183,7 @@ namespace video
 				MinFilter != b.MinFilter ||
 				MagFilter != b.MagFilter ||
 				AnisotropicFilter != b.AnisotropicFilter ||
-				LODBias != b.LODBias ||
-				BilinearFilterLegacy != b.BilinearFilterLegacy ||
-				TrilinearFilterLegacy != b.TrilinearFilterLegacy;
+				LODBias != b.LODBias;
 			if (different)
 				return true;
 			else
@@ -240,29 +235,6 @@ namespace video
 		/** Do not access this element directly as the internal
 		resource management has to cope with Null pointers etc. */
 		core::matrix4* TextureMatrix;
-
-		/** Used for emulating the old behavior of EMF_BILINEAR_FILTER and
-		EMF_TRILINEAR_FILTER. */
-		bool BilinearFilterLegacy;
-
-		/** Used for emulating the old behavior of EMF_BILINEAR_FILTER and
-		EMF_TRILINEAR_FILTER. */
-		bool TrilinearFilterLegacy;
-
-		/** Used for emulating the old behavior of EMF_BILINEAR_FILTER and
-		EMF_TRILINEAR_FILTER. */
-		void applyFiltersLegacy() {
-			if (TrilinearFilterLegacy) {
-				MinFilter = ETMINF_TRILINEAR;
-				MagFilter = ETMAGF_BILINEAR;
-			} else if (BilinearFilterLegacy) {
-				MinFilter = ETMINF_BILINEAR;
-				MagFilter = ETMAGF_BILINEAR;
-			} else {
-				MinFilter = ETMINF_NEAREST;
-				MagFilter = ETMAGF_NEAREST;
-			}
-		}
 	};
 
 } // end namespace video
