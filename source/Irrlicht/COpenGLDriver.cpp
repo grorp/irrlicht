@@ -2709,21 +2709,19 @@ void COpenGLDriver::setTextureRenderStates(const SMaterial& material, bool reset
 			}
 #endif
 
-			if (!statesCache.IsCached || material.TextureLayer[i].MinFilter != statesCache.MinFilter ||
-				material.TextureLayer[i].MagFilter != statesCache.MagFilter)
+			if (!statesCache.IsCached || material.TextureLayer[i].MagFilter != statesCache.MagFilter)
 			{
 				E_TEXTURE_MAG_FILTER magFilter = material.TextureLayer[i].MagFilter;
 				glTexParameteri(tmpType, GL_TEXTURE_MAG_FILTER,
 					magFilter == ETMAGF_BILINEAR ? GL_LINEAR : GL_NEAREST);
 
-				statesCache.MinFilter = material.TextureLayer[i].MinFilter;
-				statesCache.MagFilter = material.TextureLayer[i].MagFilter;
+				statesCache.MagFilter = magFilter;
 			}
 
 			if (material.UseMipMaps && tmpTexture->hasMipMaps())
 			{
 				if (!statesCache.IsCached || material.TextureLayer[i].MinFilter != statesCache.MinFilter ||
-					material.TextureLayer[i].MagFilter != statesCache.MagFilter || !statesCache.MipMapStatus)
+					!statesCache.MipMapStatus)
 				{
 					E_TEXTURE_MIN_FILTER minFilter = material.TextureLayer[i].MinFilter;
 					glTexParameteri(tmpType, GL_TEXTURE_MIN_FILTER,
@@ -2731,22 +2729,20 @@ void COpenGLDriver::setTextureRenderStates(const SMaterial& material, bool reset
 						minFilter == ETMINF_BILINEAR ? GL_LINEAR_MIPMAP_NEAREST :
 						GL_NEAREST_MIPMAP_NEAREST);
 
-					statesCache.MinFilter = material.TextureLayer[i].MinFilter;
-					statesCache.MagFilter = material.TextureLayer[i].MagFilter;
+					statesCache.MinFilter = minFilter;
 					statesCache.MipMapStatus = true;
 				}
 			}
 			else
 			{
 				if (!statesCache.IsCached || material.TextureLayer[i].MinFilter != statesCache.MinFilter ||
-					material.TextureLayer[i].MagFilter != statesCache.MagFilter || statesCache.MipMapStatus)
+					statesCache.MipMapStatus)
 				{
 					E_TEXTURE_MIN_FILTER minFilter = material.TextureLayer[i].MinFilter;
 					glTexParameteri(tmpType, GL_TEXTURE_MIN_FILTER,
 						(minFilter == ETMINF_TRILINEAR || minFilter == ETMINF_BILINEAR) ? GL_LINEAR : GL_NEAREST);
 
-					statesCache.MinFilter = material.TextureLayer[i].MinFilter;
-					statesCache.MagFilter = material.TextureLayer[i].MagFilter;
+					statesCache.MinFilter = minFilter;
 					statesCache.MipMapStatus = false;
 				}
 			}
