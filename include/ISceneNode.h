@@ -355,7 +355,8 @@ namespace scene
 		//! Execute a function on all materials of this scene node.
 		/** Useful for setting material properties, e.g. if you want the whole
 		mesh to be affected by light. */
-		void forEachMaterial(const std::function<void(video::SMaterial &)>& fn) {
+		template <typename F>
+		void forEachMaterial(F &&fn) {
 			for (u32 i = 0; i < getMaterialCount(); i++) {
 				fn(getMaterial(i));
 			}

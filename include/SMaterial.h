@@ -463,7 +463,8 @@ namespace video
 		//! Execute a function on all texture layers.
 		/** Useful for setting properties which are not per material, but per
 		texture layer, e.g. bilinear filtering. */
-		void forEachTexture(const std::function<void(SMaterialLayer &)>& fn) {
+		template <typename F>
+		void forEachTexture(F &&fn) {
 			for (u32 i = 0; i < MATERIAL_MAX_TEXTURES; i++) {
 				fn(TextureLayer[i]);
 			}
