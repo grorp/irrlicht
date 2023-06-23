@@ -860,8 +860,8 @@ COGLES2Driver::~COGLES2Driver()
 		if (!texture)
 			return;
 
-			// texcoords need to be flipped horizontally for RTTs
-			const bool isRTT = texture->isRenderTarget();
+		// texcoords need to be flipped horizontally for RTTs
+		const bool isRTT = texture->isRenderTarget();
 		const core::dimension2du& ss = texture->getOriginalSize();
 		const f32 invW = 1.f / static_cast<f32>(ss.Width);
 		const f32 invH = 1.f / static_cast<f32>(ss.Height);
