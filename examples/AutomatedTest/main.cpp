@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 		scene::IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode(mesh);
 		if (node)
 		{
-			node->forEachMaterial([&tex] (video::SMaterial &mat) {
+			node->forEachMaterial([tex] (video::SMaterial &mat) {
 				mat.Lighting = false;
 				mat.setTexture(0, tex);
 			});
