@@ -965,6 +965,7 @@ inline size_t multibyteToWString(stringw& destination, const core::stringc& sour
 	}
 }
 
+
 inline size_t utf8ToWString(stringw &destination, const char *source)
 {
 	std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
