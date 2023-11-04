@@ -163,7 +163,7 @@ void CGUICheckBox::draw()
 		// the checked icon
 		if (Checked)
 		{
-			skin->drawIcon(this, EGDI_CHECK_BOX_CHECKED, checkRect.getCenter(),
+			skin->drawIcon(this, EGDI_CHECK_BOX_CHECKED, checkRect,
 				CheckTime, os::Timer::getTime(), false, &AbsoluteClippingRect);
 		}
 

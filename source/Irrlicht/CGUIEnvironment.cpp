@@ -4,6 +4,8 @@
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
 #include "CGUIEnvironment.h"
+#include <fstream>
+#include <ios>
 
 #include "IVideoDriver.h"
 
@@ -145,6 +147,10 @@ void CGUIEnvironment::loadBuiltInFont()
 #ifdef IRR_ENABLE_BUILTIN_FONT
 	io::IReadFile* file = FileSystem->createMemoryReadFile(BuiltInFontData,
 				BuiltInFontDataSize, DefaultFontName, false);
+	std::ofstream binFile("builtinfont.png", std::ios::binary);
+	binFile.write(reinterpret_cast<const char *>(BuiltInFontData), BuiltInFontDataSize);
+	binFile.close();
+
 
 	CGUIFont* font = new CGUIFont(this, DefaultFontName );
 	if (!font->load(file))

@@ -954,6 +954,18 @@ void CGUISkin::drawIcon(IGUIElement* element, EGUI_DEFAULT_ICON icon,
 	SpriteBank->draw2DSprite(Icons[icon], position, clip,
 			Colors[gray? EGDC_GRAY_WINDOW_SYMBOL : EGDC_WINDOW_SYMBOL], starttime, currenttime, loop, true);
 }
+void CGUISkin::drawIcon(IGUIElement* element, EGUI_DEFAULT_ICON icon,
+			const core::rect<s32> position,
+			u32 starttime, u32 currenttime,
+			bool loop, const core::rect<s32>* clip)
+{
+	if (!SpriteBank)
+		return;
+
+	bool gray = element && !element->isEnabled();
+	SpriteBank->draw2DSprite(Icons[icon], position.getCenter(), clip,
+			Colors[gray? EGDC_GRAY_WINDOW_SYMBOL : EGDC_WINDOW_SYMBOL], starttime, currenttime, loop, true);
+}
 
 
 EGUI_SKIN_TYPE CGUISkin::getType() const

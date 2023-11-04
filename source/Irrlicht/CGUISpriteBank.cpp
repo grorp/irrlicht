@@ -8,6 +8,8 @@
 #include "IVideoDriver.h"
 #include "ITexture.h"
 
+#include <iostream>
+
 namespace irr
 {
 namespace gui
@@ -63,6 +65,19 @@ video::ITexture* CGUISpriteBank::getTexture(u32 index) const
 		return Textures[index];
 	else
 		return 0;
+}
+
+core::rect<s32> CGUISpriteBank::getSpriteSize(u32 index, u32 time, bool loop) const
+{
+	u32 frame = 0;
+	if (!getFrameNr(frame, index, time, loop))
+		return core::rect<s32>();
+
+	const u32 rn = Sprites[index].Frames[frame].rectNumber;
+	if (rn >= Rectangles.size())
+		return core::rect<s32>();
+
+	return Rectangles[rn];
 }
 
 

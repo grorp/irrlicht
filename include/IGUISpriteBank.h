@@ -132,6 +132,10 @@ public:
 			const video::SColor& color= video::SColor(255,255,255,255),
 			u32 starttime=0, u32 currenttime=0,
 			bool loop=true, bool center=false) = 0;
+
+	//! Returns the size of a sprite.
+	/** The parameters have the same meaning as with draw2DSprite. */
+	virtual core::rect<s32> getSpriteSize(u32 index, u32 time, bool loop) const = 0;
 };
 
 

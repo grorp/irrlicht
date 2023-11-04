@@ -10,6 +10,8 @@
 #include "IGUIFont.h"
 #include "os.h"
 
+#include <iostream>
+
 namespace irr
 {
 namespace gui

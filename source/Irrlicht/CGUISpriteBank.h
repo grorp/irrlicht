@@ -33,6 +33,7 @@ public:
 
 	u32 getTextureCount() const override;
 	video::ITexture* getTexture(u32 index) const override;
+	core::rect<s32> getSpriteSize(u32 index, u32 time, bool loop) const override;
 	void addTexture(video::ITexture* texture) override;
 	void setTexture(u32 index, video::ITexture* texture) override;
 
